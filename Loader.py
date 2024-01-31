@@ -18,6 +18,7 @@ class Loader:
     __TIMESTAMP_PATH = os.path.join(__ROOT_PATH, "resources/timestamp.json")
     __CONFIG_PATH = os.path.join(__ROOT_PATH, "config.json")
     __GIT_PATH = Path(os.path.join(__ROOT_PATH, ".git"))
+    __DEBUG = os.environ.get("DEBUG", "0") == "1"
 
     __DAY_SECONDS = 24 * 60 * 60
     __WEEK_SECONDS = 7 * __DAY_SECONDS
@@ -113,8 +114,12 @@ class Loader:
 
     __cached_config = None
     def __config(self):
+        start = time.time()
         if self.__cached_config is None:
             self.__cached_config = self.__get_config()
+        if self.__DEBUG == "1":
+            self.__log(f"Config loaded in {time.time() - start} seconds")
+
         return self.__cached_config
 
     def __get_fonts_folder_path(self):
@@ -294,6 +299,7 @@ class Loader:
         self.__log(str(override_nodes_len) + " nodes were overridden.")
 
     def get_modules(self):
+        start = time.time()
         modules = dict()
 
         if self.__config()["modules"]["AlphaChanel"]:
@@ -355,5 +361,8 @@ class Loader:
 
         self.__log(str(modules_len) + " modules were enabled.")
         self.__log(str(nodes_len) + " nodes were loaded.")
+
+        if self.__DEBUG == "1" :
+            self.__log(f"Modules loaded in {time.time() - start} seconds")
 
         return modules
