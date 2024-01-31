@@ -38,6 +38,7 @@ class Loader:
     def __create_config(self):
         with open(self.__CONFIG_PATH, "w", encoding="utf-8") as f:
             json.dump(self.__template(), f, ensure_ascii=False, indent=4)
+        self.__cached_config = None
 
     def __create_timestamp(self):
         with open(self.__TIMESTAMP_PATH, "w", encoding="utf-8") as f:
@@ -100,14 +101,21 @@ class Loader:
 
         with open(self.__CONFIG_PATH, "w", encoding="utf-8") as f:
             json.dump(source, f, ensure_ascii=False, indent=4)
+        self.__cached_config = None
 
     def __update_timestamp(self):
         with open(self.__TIMESTAMP_PATH, "w", encoding="utf-8") as f:
             json.dump({"timestamp": time.time()}, f, ensure_ascii=False, indent=4)
 
     __template = __get_template
-    __config = __get_config
+    # __config = __get_config
     __timestamp = __get_timestamp
+
+    __cached_config = None
+    def __config(self):
+        if self.__cached_config is None:
+            self.__cached_config = self.__get_config()
+        return self.__cached_config
 
     def __get_fonts_folder_path(self):
         system = platform.system()
