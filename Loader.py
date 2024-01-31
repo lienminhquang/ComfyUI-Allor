@@ -18,7 +18,7 @@ class Loader:
     __TIMESTAMP_PATH = os.path.join(__ROOT_PATH, "resources/timestamp.json")
     __CONFIG_PATH = os.path.join(__ROOT_PATH, "config.json")
     __GIT_PATH = Path(os.path.join(__ROOT_PATH, ".git"))
-    __DEBUG = os.environ.get("DEBUG", "0") == "1"
+    __DEBUG = os.environ.get("DEBUG", "0")
 
     __DAY_SECONDS = 24 * 60 * 60
     __WEEK_SECONDS = 7 * __DAY_SECONDS
